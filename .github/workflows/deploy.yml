@@ -17,5 +17,5 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           procfile: 'web: npm start'
         env:
-          HD_DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-          HD_DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          HD_DISCORD_TOKEN: ${{ secrets.VITE_BASE_URL }}
+          HD_DISCORD_CLIENT_ID: ${{ secrets.GH_ACCESS_TOKEN }}
