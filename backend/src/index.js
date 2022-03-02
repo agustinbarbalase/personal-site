@@ -11,6 +11,7 @@ var whitelist = [
   "http://localhost:3000",
   "http://localhost:3001",
   `http://localhost:${PORT}`,
+  process.env.VITE_BASE_URL
 ];
 var corsOptions = {
   origin: function (origin, callback) {
