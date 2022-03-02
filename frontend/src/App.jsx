@@ -1,11 +1,11 @@
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
   const [projects, setProjects] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/repos")
+    fetch("/api/repos")
       .then((res) => res.json())
       .then((res) => setProjects(res))
       .catch((err) => console.error(err));

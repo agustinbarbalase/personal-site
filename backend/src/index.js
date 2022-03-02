@@ -4,7 +4,7 @@ const fs = require("fs");
 const cors = require("cors");
 const githubReq = require("./lib/githubReq");
 const app = express();
-require('dotenv').config();
+require("dotenv").config();
 
 const PORT = process.env.PORT || 3001;
 
@@ -12,7 +12,7 @@ var whitelist = [
   "http://localhost:3000",
   "http://localhost:3001",
   `http://localhost:${PORT}`,
-  process.env.VITE_BASE_URL
+  process.env.VITE_BASE_URL,
 ];
 var corsOptions = {
   origin: function (origin, callback) {

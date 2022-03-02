@@ -22,9 +22,16 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         input: {
-          main: resolve(__dirname, 'index.html'),
-        }
-      }
+          main: resolve(__dirname, "index.html"),
+        },
+      },
+    },
+    server: {
+      proxy: {
+        "/api": {
+          target: `${env.VITE_BASE_URL || "http://localhost:3001"}`,
+        },
+      },
     }
   };
 });
