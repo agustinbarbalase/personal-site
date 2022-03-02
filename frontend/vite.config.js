@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
         template: "index.html",
         inject: {
           data: {
-            baseUrl: env.VITE_BASE_URL || "http://localhost:3000",
+            baseUrl: env.VITE_BASE_URL,
           },
         },
       }),
