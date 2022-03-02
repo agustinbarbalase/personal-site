@@ -4,6 +4,7 @@ const fs = require("fs");
 const cors = require("cors");
 const githubReq = require("./lib/githubReq");
 const app = express();
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
 
