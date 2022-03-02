@@ -1,0 +1,26 @@
+:root {
+  --green-1: #021205;
+  --green-2: #0e8422;
+  --green-3: #11a029;
+  --green-4: #13b02d;
+  --green-5: #15c232;
+  --green-6: #48ca5e;
+  --green-7: #010201;
+  --green-8: #add8b4;
+  --green-9: #dfdfdf;
+}
+
+* {
+  box-sizing: border-box;
+  font-size: 16px;
+  margin: 0;
+  color: var(--green-1);
+}
+
+body {
+  margin: 0;
+  background-color: var(--green-9);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
