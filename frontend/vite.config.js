@@ -13,6 +13,8 @@ export default defineConfig(({ mode }) => {
       createHtmlPlugin({
         minify: true,
         template: "index.html",
+        filename: 'index.html',
+        entry: "src/main.jsx",
         inject: {
           data: {
             baseUrl: env.VITE_BASE_URL,
