@@ -11,8 +11,9 @@ async function createServer() {
   app.use("/public", express.static("public"));
   app.use("/assets", express.static(path.join(__dirname, "../../frontend/dist/client/assets")));
 
+  let vite;
   if(process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
+    vite = await createViteServer({
       server: { middlewareMode: "ssr" },
     });
     app.use(vite.middlewares);
@@ -32,8 +33,10 @@ async function createServer() {
       const html = template.replace(`<div id="app"></div>`, appHtml);
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (e) {
-      vite.ssrFixStacktrace(e);
-      next(e);
+      if(process.env.NODE_ENV !== "production") {
+        vite.ssrFixStacktrace(e);
+      }
+      res.status(500).end(e);
     }
   });
 
