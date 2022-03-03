@@ -19,4 +19,4 @@ jobs:
         env:
           HD_VITE_BASE_URL : ${{ secrets.VITE_BASE_URL }}
           HD_GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          HD_REDIS_URL: ${{ secret.REDIS_URL }}
+          HD_REDIS_URL: ${{ secrets.REDIS_URL }}
