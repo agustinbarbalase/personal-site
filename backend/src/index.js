@@ -11,10 +11,12 @@ async function createServer() {
   app.use("/public", express.static("public"));
   app.use("/assets", express.static(path.join(__dirname, "../../frontend/dist/client/assets")));
 
-  const vite = await createViteServer({
-    server: { middlewareMode: "ssr" },
-  });
-  app.use(vite.middlewares);
+  if(process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: "ssr" },
+    });
+    app.use(vite.middlewares);
+  }
 
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
