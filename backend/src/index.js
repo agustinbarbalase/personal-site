@@ -9,34 +9,36 @@ async function createServer() {
 
   app.use("/api", require("./routes/api.routes"));
   app.use("/public", express.static("public"));
-  app.use("/assets", express.static(path.join(__dirname, "../../frontend/dist/client/assets")));
+  app.use(
+    "/assets",
+    express.static(path.join(__dirname, "../../frontend/dist/client/assets"))
+  );
 
   let vite;
-  if(process.env.NODE_ENV !== "production") {
+  let template = fs.readFileSync(
+    path.resolve(__dirname, "../../frontend/dist/client/index.html"),
+    "utf-8"
+  );
+  if (process.env.NODE_ENV !== "production") {
     vite = await createViteServer({
       server: { middlewareMode: "ssr" },
     });
     app.use(vite.middlewares);
+    template = await vite.transformIndexHtml(url, template);
   }
 
-  app.use("*", async (req, res, next) => {
+  app.use("*", async (req, res) => {
     const url = req.originalUrl;
-
     try {
-      let template = fs.readFileSync(
-        path.resolve(__dirname, "../../frontend/dist/client/index.html"),
-        "utf-8"
-      );
-      template = await vite.transformIndexHtml(url, template);
       const { render } = require("../../frontend/dist/server/entry-server");
       const appHtml = render(url, {});
       const html = template.replace(`<div id="app"></div>`, appHtml);
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
-    } catch (e) {
-      if(process.env.NODE_ENV !== "production") {
-        vite.ssrFixStacktrace(e);
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        vite.ssrFixStacktrace(err);
       }
-      res.status(500).end(e);
+      res.status(500).end(err);
     }
   });
 
