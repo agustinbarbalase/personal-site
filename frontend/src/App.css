@@ -25,11 +25,11 @@
   text-align: center;
 }
 
-.projects {
+.projects, .contact {
   padding: 2rem;
 }
 
-.project-title {
+.project-title, .contact-title {
   font-size: 3rem;
   margin: 2rem 0rem;
 }
@@ -73,6 +73,21 @@
   background-color: var(--green-2);
 }
 
+.contact-board {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.contact-item-img {
+  width: 4rem;
+  height: 4rem;
+}
+
 .footer {
   background-color: var(--green-2);
   display: flex;
@@ -109,6 +124,10 @@
   .project-title {
     text-align: left;
   }
+
+  .contact-board {
+    width: 80%;
+  }
 }
 
 @media only screen and (min-width: 900px) {
@@ -119,10 +138,18 @@
   .project-board {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .contact-board {
+    width: 60%;
+  }
 }
 
 @media only screen and (min-width: 1000px) {  
   .project-board {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .contact-board {
+    width: 50%;
   }
 }

@@ -5,14 +5,13 @@ import { createHtmlPlugin } from "vite-plugin-html";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
-  console.log(env.VITE_BASE_URL);
   return {
     plugins: [
       react(),
       createHtmlPlugin({
         minify: true,
         template: "index.html",
-        filename: 'index.html',
+        filename: "index.html",
         entry: "src/main.jsx",
         inject: {
           data: {

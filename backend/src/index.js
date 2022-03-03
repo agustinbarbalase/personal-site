@@ -1,67 +1,43 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const cors = require("cors");
-const githubReq = require("./lib/githubReq");
-const app = express();
-require("dotenv").config();
+const { createServer: createViteServer } = require("vite");
 
-const PORT = process.env.PORT || 3001;
+async function createServer() {
+  const app = express();
+  const PORT = process.env.PORT || 3001;
 
-var whitelist = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  `http://localhost:${PORT}`,
-  process.env.VITE_BASE_URL,
-];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
+  app.use("/api", require("./routes/api.routes"));
+  app.use("/public", express.static("public"));
+  app.use("/assets", express.static(path.join(__dirname, "../../frontend/dist/client/assets")));
 
-app.get("/api/repos", cors(corsOptions), async (req, res) => {
-  try {
-    const { data } = await githubReq.listRepoForAUser("agustinbarbalase");
-    res.status(200).send(
-      data.map((item) => {
-        return {
-          id: item.id,
-          name: item.name,
-          description: item.description,
-          url: item.svn_url,
-        };
-      })
-    );
-  } catch (err) {
-    console.log(err);
-    res.status(500).end();
-  }
-});
-
-app.get("/license", (req, res) => {
-  fs.readFile(path.join(__dirname, "../../LICENSE"), "utf-8", (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).end();
-    }
-    result = result
-      .split("\r\n")
-      .map((item) => {
-        if (item !== "") return item;
-      })
-      .join("<br>");
-    return res.status(200).send(result);
+  const vite = await createViteServer({
+    server: { middlewareMode: "ssr" },
   });
-});
+  app.use(vite.middlewares);
 
-app.use("/", express.static(path.join(__dirname, "../../frontend/dist")));
-app.use("/public", express.static("public"));
+  app.use("*", async (req, res, next) => {
+    const url = req.originalUrl;
 
-app.listen(PORT, () => {
-  console.log(`Server on port ${PORT}`);
-});
+    try {
+      let template = fs.readFileSync(
+        path.resolve(__dirname, "../../frontend/dist/client/index.html"),
+        "utf-8"
+      );
+      template = await vite.transformIndexHtml(url, template);
+      const { render } = require("../../frontend/dist/server/entry-server");
+      const appHtml = render(url, {});
+      const html = template.replace(`<div id="app"></div>`, appHtml);
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+    } catch (e) {
+      vite.ssrFixStacktrace(e);
+      next(e);
+    }
+  });
+
+  app.listen(PORT, () => {
+    console.log(`Server on port ${PORT}`);
+  });
+}
+
+createServer();
