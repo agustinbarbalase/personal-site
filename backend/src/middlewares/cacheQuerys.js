@@ -1,4 +1,5 @@
 const client = require("../database");
+require("dotenv").config();
 
 const cacheQuerys = async (req, res, next) => {
   const reply = await client.get(`${process.env.NODE_ENV};${req.originalUrl}`);
