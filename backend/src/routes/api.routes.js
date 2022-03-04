@@ -5,6 +5,7 @@ const githubReq = require("../lib/githubReq");
 const { cors, corsOptions } = require("../middlewares/corsPolicy");
 const client = require("../database");
 const router = Router();
+require("dotenv").config();
 
 router.get("/repos", cors(corsOptions), async (req, res) => {
   try {
@@ -17,7 +18,9 @@ router.get("/repos", cors(corsOptions), async (req, res) => {
         url: item.svn_url,
       };
     });
-    await client.set(req.originalUrl, JSON.stringify(result));
+    await client.set(`${process.env.NODE_ENV};${req.originalUrl}`, JSON.stringify(result), {
+      EX: 60 * 60,
+    });
     res.status(200).set({ "Content-Type": "application/json" }).send(result);
   } catch (err) {
     console.log(err);
@@ -28,8 +31,11 @@ router.get("/repos", cors(corsOptions), async (req, res) => {
 router.get("/contact", cors(corsOptions), async (req, res) => {
   try {
     await client.set(
-      req.originalUrl,
-      JSON.stringify(require("../lib/contactList"))
+      `${process.env.NODE_ENV};${req.originalUrl}`,
+      JSON.stringify(require("../lib/contactList")),
+      {
+        EX: 60 * 60,
+      }
     );
     res
       .status(200)

@@ -3,6 +3,7 @@ const LIST_CONTENT_TYPE = {
   css: "text/css",
   svg: "image/svg+xml",
   html: "text/html",
+  jpg: "image/jpeg"
 };
 
 module.exports = (extension) => {

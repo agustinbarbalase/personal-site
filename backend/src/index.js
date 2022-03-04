@@ -34,11 +34,13 @@ async function createServer() {
       server: { middlewareMode: "ssr" },
     });
     app.use(vite.middlewares);
-    template = await vite.transformIndexHtml(url, template);
   }
 
   app.use("*", async (req, res) => {
     const url = req.originalUrl;
+    if (process.env.NODE_ENV !== "production") {
+      template = await vite.transformIndexHtml(url, template);
+    }
     const reply = JSON.parse(await client.get(url)) || null;
     if (reply) {
       return res
