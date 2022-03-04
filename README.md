@@ -24,12 +24,12 @@ the following dependencies and resources:
 Clone repository
 
 ```shell
-git clone https://github.com/agustinbarbalase/contact-manager.git
+git clone https://github.com/agustinbarbalase/personal-site.git
 ```
 
 Create two ```.env``` file on your repository with the following options:
 
-````./backend```
+```./backend```
 
 ```shell
 GH_ACCESS_TOKEN=your-gh-access-token-here
@@ -38,7 +38,7 @@ NODE_ENV=your-node-env-here
 REDIS_URL=your-redis-url-here
 ```
 
-````./frontend```
+```./frontend```
 
 ```shell
 VITE_BASE_URL=your-vite-base-url-here
