@@ -6,7 +6,10 @@ require("dotenv").config();
 
 const cacheQuerys = async (req, res, next) => {
   try {
-    const reply = JSON.parse(await client.get(req.originalUrl)) || null;
+    const reply =
+      JSON.parse(
+        await client.get(`${process.env.NODE_ENV};${req.originalUrl}`)
+      ) || null;
     let pathFile;
     let result;
     const extension =
